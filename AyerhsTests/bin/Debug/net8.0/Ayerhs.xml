@@ -1,0 +1,670 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Ayerhs</name>
+    </assembly>
+    <members>
+        <member name="T:Ayerhs.Application.Repositories.AccountManagement.AccountRepository">
+            <summary>
+            This class implements the IAccountRepository interface and provides concrete methods
+            for interacting with Client data using Entity Framework Core.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.#ctor(Ayerhs.Infrastructure.Data.ApplicationDbContext)">
+            <summary>
+            This class implements the IAccountRepository interface and provides concrete methods
+            for interacting with Client data using Entity Framework Core.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.AddClientAsync(Ayerhs.Core.Entities.AccountManagement.Clients)">
+            <summary>
+            Asynchronously adds a new Client entity to the database.
+            </summary>
+            <param name="client">The Client entity to be added.</param>
+            <returns>A Task that returns the newly added Client entity.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.GetClientByEmailAsync(System.String)">
+            <summary>
+            Asynchronously retrieves a Client entity by email address.
+            </summary>
+            <param name="email">The email address of the Client to retrieve.</param>
+            <returns>A Task that returns the Client entity with the matching email address, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.GetClientByUsernameAsync(System.String)">
+            <summary>
+            Asynchronously retrieves a Client entity by username.
+            </summary>
+            <param name="username">The username of the Client to retrieve.</param>
+            <returns>A Task that returns the Client entity with the matching username, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.GetRoleByName(System.Int32)">
+            <summary>
+            Asynchronously retrieves the name of a role by its ID.
+            </summary>
+            <param name="roleId">The ID of the role to retrieve.</param>
+            <returns>A Task that returns the name of the role with the matching ID, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.AddClientRolesAsync(Ayerhs.Core.Entities.AccountManagement.ClientRoles)">
+            <summary>
+            Asynchronously adds a new Client Role entity to the database.
+            </summary>
+            <param name="clientRoles">An entity that decides Client Role.</param>
+            <returns>A Task that returns Client Roles entity.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.UpdateClientAsync(Ayerhs.Core.Entities.AccountManagement.Clients)">
+            <summary>
+            Asynchronously updates an existing Client entity in the database.
+            </summary>
+            <param name="clients">The Client entity to be updated.</param>
+            <returns>A Task that completes the update operation.</returns>
+        </member>
+        <member name="T:Ayerhs.Application.Services.AccountManagement.AccountService">
+            <summary>
+            This class implements the IAccountService interface and provides concrete methods
+            for account management services.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.#ctor(Microsoft.Extensions.Logging.ILogger{Ayerhs.Application.Services.AccountManagement.AccountService},Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository)">
+            <summary>
+            This class implements the IAccountService interface and provides concrete methods
+            for account management services.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.GetGenerateSalt">
+            <summary>
+            Generates a random base64 encoded salt string of length 16 bytes.
+            </summary>
+            <returns>A base64 encoded string representing the random salt.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.HashPassword(System.String,System.String)">
+            <summary>
+            Hashes a password using SHA256 with a provided salt.
+            </summary>
+            <param name="password">The password to be hashed.</param>
+            <param name="salt">The salt to be used for hashing.</param>
+            <returns>A base64 encoded string representing the hashed password.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.GenerateClientId">
+            <summary>
+            Generates a new unique client identifier using a Guid.
+            </summary>
+            <returns>A string representing the newly generated client ID.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.RegisterClientAsync(Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto)">
+            <summary>
+            Asynchronously registers a new Client using the provided data in the InRegisterClientDto object.
+            Throws exceptions if the provided email or username already exists.
+            </summary>
+            <param name="inRegisterClientDto">A DTO containing data for client registration.</param>
+            <returns>A Task representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.LoginClientAsync(Ayerhs.Core.Entities.AccountManagement.InLoginClientDto)">
+            <summary>
+            Asynchronously logs in a client user using the provided email address and password.
+            
+            Throws exceptions if the client account is locked due to failed login attempts.
+            
+            Returns the Client entity if login is successful, otherwise null.
+            </summary>
+            <param name="inLoginClientDto">A DTO containing email address and password for login.</param>
+            <returns>A Task that returns the Client entity if login is successful, otherwise null.</returns>
+        </member>
+        <member name="T:Ayerhs.Controllers.AccountController">
+            <summary>
+            Controller class for handling account management related operations.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Controllers.AccountController.#ctor(Microsoft.Extensions.Logging.ILogger{Ayerhs.Controllers.AccountController},Ayerhs.Core.Interfaces.Utility.IJwtTokenGenerator,Ayerhs.Core.Interfaces.AccountManagement.IAccountService,Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository)">
+            <summary>
+            Controller class for handling account management related operations.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Controllers.AccountController.ExtractClaimsFromToken(System.String)">
+            <summary>
+            Private method to extract claims from a JWT token.
+            </summary>
+            <param name="token">The JWT token.</param>
+            <returns>A dictionary containing claim types and their values.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.AccountController.RegisterClient(Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto)">
+            <summary>
+            Registers a new client user using the provided information.
+            </summary>
+            <param name="inRegisterClientDto">The data transfer object containing client registration information.</param>
+            <returns>An IActionResult representing the HTTP response for the registration request.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.AccountController.LoginClient(Ayerhs.Core.Entities.AccountManagement.InLoginClientDto)">
+            <summary>
+            This endpoint allows a client user to log in to the system using their email address and password.
+            </summary>
+            <param name="inLoginClientDto">The data transfer object containing client login information (email and password).</param>
+            <returns>An IActionResult representing the HTTP response for the login request. The response object may contain a JWT token, client user object, and claims if login is successful, or an error message otherwise.</returns>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.ClientRoles">
+            <summary>
+            This class represents the relationship between a Client and a Role.
+            (Many-to-Many relationship)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.ClientRoles.ClientId">
+            <summary>
+            Foreign key for the Client entity. (Required)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.ClientRoles.Client">
+            <summary>
+            Navigation property for the Client entity.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.ClientRoles.RoleId">
+            <summary>
+            Foreign key for the Role entity. (Required)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.ClientRoles.Role">
+            <summary>
+            Navigation property for the Role entity.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.Clients">
+            <summary>
+            This class represents a Client entity within the system.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.Id">
+            <summary>
+            Unique identifier for the Client. (Primary Key)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.ClientId">
+            <summary>
+            Client identifier (optional).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.ClientName">
+            <summary>
+            Name of the Client. (Required, Max Length 100)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.ClientUsername">
+            <summary>
+            Username for the Client account. (Required, Max Length 20)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.ClientEmail">
+            <summary>
+            Email address of the Client. (Required, Email format)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.ClientPassword">
+            <summary>
+            Client's password. (Required, Max Length 1024)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.ClientMobileNumber">
+            <summary>
+            Mobile phone number of the Client. (Required, Phone format)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.IsAdmin">
+            <summary>
+            Indicates whether the Client is an administrator.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.IsActive">
+            <summary>
+            Indicates whether the Client account is active.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.Status">
+            <summary>
+            Status of the Client account (Active, Inactive, Suspended).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.DeletedState">
+            <summary>
+            Deleted state of the Client (Not Deleted, Soft Deleted, Hard Deleted).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.CreatedOn">
+            <summary>
+            Date and time the Client record was created.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.UpdatedOn">
+            <summary>
+            Date and time the Client record was last updated.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.DeletedOn">
+            <summary>
+            Date and time the Client record was soft deleted.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.AutoDeletedOn">
+            <summary>
+            Date and time the Client record was auto-deleted.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.Salt">
+            <summary>
+            Salt value used for password hashing.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.IsLocked">
+            <summary>
+            Locked condition of Client Account
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.AttemptCount">
+            <summary>
+            Login Attempt Counts
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.LastLoginDateTime">
+            <summary>
+            Last Login Date and Time
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.LockedUntil">
+            <summary>
+            Locked Until Date Time
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Clients.ClientRoles">
+            <summary>
+            Collection of client roles associated with the Client.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.ClientStatus">
+            <summary>
+            Enumeration representing the different Client account statuses.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.AccountManagement.ClientStatus.Active">
+            <summary>
+            Client account is active.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.AccountManagement.ClientStatus.Inactive">
+            <summary>
+            Client account is inactive.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.AccountManagement.ClientStatus.Suspended">
+            <summary>
+            Client account is suspended.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.DeletedState">
+            <summary>
+            Enumeration representing the different deleted states of a Client record.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.AccountManagement.DeletedState.NotDeleted">
+            <summary>
+            Client record is not deleted.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.AccountManagement.DeletedState.SoftDeleted">
+            <summary>
+            Client record is in deleted state.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.AccountManagement.DeletedState.HardDeleted">
+            <summary>
+            Client record is deleted.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.InLoginClientDto">
+            <summary>
+            This class represents the InLoginClientDto object used for login requests.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InLoginClientDto.ClientEmail">
+            <summary>
+            Gets or sets the email address of the client attempting to login.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InLoginClientDto.ClientPassword">
+            <summary>
+            Gets or sets the password of the client attempting to login.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto">
+            <summary>
+            This class represents a Data Transfer Object (DTO) used for client registration data.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto.ClientName">
+            <summary>
+            Name of the Client. (Required, Max Length 100)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto.ClientUsername">
+            <summary>
+            Username for the Client account. (Required, Max Length 20)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto.ClientEmail">
+            <summary>
+            Email address of the Client. (Required, Email format)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto.ClientPassword">
+            <summary>
+            Client's password (for registration). (Required, Max Length 50)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto.ClientMobileNumber">
+            <summary>
+            Mobile phone number of the Client. (Required, Phone format)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto.RoleId">
+            <summary>
+            Role ID for the Client. (Required)
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.LoginResponseDto">
+            <summary>
+            This class represents the LoginResponseDto object used in account management.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.LoginResponseDto.Token">
+            <summary>
+            Gets or sets the access token obtained after a successful login.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.LoginResponseDto.Client">
+            <summary>
+            Gets or sets the client information associated with the login.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.LoginResponseDto.Claims">
+            <summary>
+            Gets or sets a collection of claims associated with the logged-in user.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.Roles">
+            <summary>
+            This class represents a Role entity within the system.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Roles.Id">
+            <summary>
+            Unique identifier for the Role (can be null for future extensibility). (Primary Key)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Roles.Name">
+            <summary>
+            Name of the Role. (Required, Max Length 50)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Roles.Description">
+            <summary>
+            Description of the Role (optional).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.Roles.ClientRoles">
+            <summary>
+            Collection of client roles associated with the Role.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.Utility.ApiResponse`1">
+            <summary>
+            Represents an API response containing status information and data.
+            </summary>
+            <typeparam name="T">The type of data returned by the API.</typeparam>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.ApiResponse`1.Status">
+            <summary>
+            Gets or sets the status of the API response. (e.g., Success, Failure)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.ApiResponse`1.StatusCode">
+            <summary>
+            Gets or sets the HTTP status code of the API response.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.ApiResponse`1.Response">
+            <summary>
+            Gets or sets the response of the API response.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.ApiResponse`1.SuccessMessage">
+            <summary>
+            Gets or sets a success message associated with the API response.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.ApiResponse`1.ErrorMessage">
+            <summary>
+            Gets or sets an error message associated with the API response.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.ApiResponse`1.ErrorCode">
+            <summary>
+            Gets or sets an error code associated with the API response.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.ApiResponse`1.Txn">
+            <summary>
+            Gets or sets a transaction number associated with the API response.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.ApiResponse`1.ReturnValue">
+            <summary>
+            Gets or sets the data returned by the API.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Entities.Utility.ApiResponse`1.#ctor">
+            <summary>
+            Initializes a new instance of the <see cref="T:Ayerhs.Core.Entities.Utility.ApiResponse`1"/> class.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Entities.Utility.ApiResponse`1.#ctor(System.String,System.Int32,System.Int32,System.String,System.String,System.String,System.String,`0)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Ayerhs.Core.Entities.Utility.ApiResponse`1"/> class with the specified properties.
+            </summary>
+            <param name="status">The status of the API response.</param>
+            <param name="statusCode">The HTTP status code of the API response.</param>
+            <param name="response">The response code of the API response.</param>
+            <param name="successMessage">A success message associated with the API response (optional).</param>
+            <param name="errorMessage">An error message associated with the API response (optional).</param>
+            <param name="errorCode">An error code associated with the API response (optional).</param>
+            <param name="txn">An txn associated with the API response (optional).</param>
+            <param name="returnValue">The data returned by the API (optional, default is the default value of T).</param>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.Utility.ConstantData">
+            <summary>
+            Provides utility methods for generating constant data.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Entities.Utility.ConstantData.GenerateTransactionId">
+            <summary>
+            Generates a unique transaction ID based on current UTC time.
+            </summary>
+            <returns>A string representing the transaction ID in the format "yyyyMMddHHmmssfff".</returns>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.Utility.CustomErrorCodes">
+            <summary>
+            This class provides a collection of custom error codes used throughout the application.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.ValidationError">
+            <summary>
+            Error code indicating a validation error occurred.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.DatabaseError">
+            <summary>
+            Error code indicating a database error occurred.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.UnauthorizedError">
+            <summary>
+            Error code indicating an unauthorized access attempt.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.NotFoundError">
+            <summary>
+            Error code indicating a requested resource was not found.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.InvalidCredentials">
+            <summary>
+            Error code for Invalid Credentials
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.AccountLocked">
+            <summary>
+            Error code for Client Account is locked.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.UnknownError">
+            <summary>
+            Error code indicating an unknown error occurred.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository">
+            <summary>
+            This interface defines methods for interacting with Client data.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.AddClientAsync(Ayerhs.Core.Entities.AccountManagement.Clients)">
+            <summary>
+            Asynchronously adds a new Client entity to the repository.
+            </summary>
+            <param name="client">The Client entity to be added.</param>
+            <returns>A Task that returns the newly added Client entity.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.GetClientByEmailAsync(System.String)">
+            <summary>
+            Asynchronously retrieves a Client entity by email address.
+            </summary>
+            <param name="email">The email address of the Client to retrieve.</param>
+            <returns>A Task that returns the Client entity with the matching email address, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.GetClientByUsernameAsync(System.String)">
+            <summary>
+            Asynchronously retrieves a Client entity by username.
+            </summary>
+            <param name="username">The username of the Client to retrieve.</param>
+            <returns>A Task that returns the Client entity with the matching username, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.GetRoleByName(System.Int32)">
+            <summary>
+            Asynchronously retrieve a role by ID.
+            </summary>
+            <param name="roleId">The ID of role.</param>
+            <returns>A task that returns the </returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.AddClientRolesAsync(Ayerhs.Core.Entities.AccountManagement.ClientRoles)">
+            <summary>
+            Asynchronously adds a new Client Role entity to the repository.
+            </summary>
+            <param name="clientRoles">The entity which decide about the role.</param>
+            <returns>A Task that returns assigned Client Role</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.UpdateClientAsync(Ayerhs.Core.Entities.AccountManagement.Clients)">
+            <summary>
+            Asynchronously updates an existing Client entity in the repository.
+            </summary>
+            <param name="clients">The Client entity with the updated data.</param>
+            <returns>A Task representing the asynchronous update operation.</returns>
+        </member>
+        <member name="T:Ayerhs.Core.Interfaces.AccountManagement.IAccountService">
+            <summary>
+            This interface defines methods for account management services.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountService.RegisterClientAsync(Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto)">
+            <summary>
+            Asynchronously registers a new Client using the provided data.
+            </summary>
+            <param name="inRegisterClientDto">A DTO containing data for client registration.</param>
+            <returns>A Task representing the asynchronous operation.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountService.LoginClientAsync(Ayerhs.Core.Entities.AccountManagement.InLoginClientDto)">
+            <summary>
+            Asynchronously attempts to login a client using the provided credentials.
+            </summary>
+            <param name="inLoginClientDto">A DTO containing login credentials.</param>
+            <returns>A Task that resolves to a Clients object containing user information on success, or null on failure.</returns>
+        </member>
+        <member name="T:Ayerhs.Infrastructure.Data.ApplicationDbContext">
+            <summary>
+            This class represents the application database context derived from DbContext.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Infrastructure.Data.ApplicationDbContext.#ctor(Microsoft.EntityFrameworkCore.DbContextOptions{Ayerhs.Infrastructure.Data.ApplicationDbContext})">
+            <summary>
+            This class represents the application database context derived from DbContext.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Infrastructure.Data.ApplicationDbContext.Clients">
+            <summary>
+            DbSet for the Clients entity.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Infrastructure.Data.ApplicationDbContext.Roles">
+            <summary>
+            DbSet for the Roles entity.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Infrastructure.Data.ApplicationDbContext.ClientRoles">
+            <summary>
+            DbSet for the ClientRoles entity.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Infrastructure.Data.ApplicationDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <summary>
+            Configures entity mappings and relationships for the database model.
+            </summary>
+            <param name="modelBuilder">The model builder instance for configuration.</param>
+        </member>
+        <member name="T:Ayerhs.Infrastructure.External.JwtTokenGenerator">
+            <summary>
+            This class is responsible for generating JSON Web Tokens (JWT) used for authentication.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Infrastructure.External.JwtTokenGenerator.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            This class is responsible for generating JSON Web Tokens (JWT) used for authentication.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Infrastructure.External.JwtTokenGenerator.GenerateToken(System.String,System.String,System.String)">
+            <summary>
+            Generates a JWT token for a user with the specified user ID, username, and role.
+            </summary>
+            <param name="userId">The unique identifier of the user.</param>
+            <param name="username">The username of the user.</param>
+            <param name="role">The user's role.</param>
+            <returns>The generated JWT token as a string.</returns>
+        </member>
+        <member name="T:Ayerhs.Migrations.AccountManagementCreateTables">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.AccountManagementCreateTables.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.AccountManagementCreateTables.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.AccountManagementCreateTables.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Ayerhs.Migrations.AccountManagementModifyClientsTable">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.AccountManagementModifyClientsTable.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.AccountManagementModifyClientsTable.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.AccountManagementModifyClientsTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
