@@ -58,13 +58,47 @@
             <param name="clients">The Client entity to be updated.</param>
             <returns>A Task that completes the update operation.</returns>
         </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.GetClientsAsync">
+            <summary>
+            Asynchronously getting registered clients
+            </summary>
+            <returns>A Task represents List of Client entity.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.AddOtpAsync(Ayerhs.Core.Entities.Utility.OtpStorage)">
+            <summary>
+            Asynchronously adds OTP details in table.
+            </summary>
+            <param name="otpStorage">The entity to be added.</param>
+            <returns>A Task of entity which added into database.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.GetOtpStorageByEmailAsync(System.String)">
+            <summary>
+            Asynchronously getting OTP stored in database.
+            </summary>
+            <param name="email">An email of client with received.</param>
+            <returns>A Task with entity of OtpStorage</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.UpdateOtpAsync(Ayerhs.Core.Entities.Utility.OtpStorage)">
+            <summary>
+            Asynchronously update OTP details in database.
+            </summary>
+            <param name="otpStorage">The entity to be updated.</param>
+            <returns>A Task of entity which Updated into database.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.VerifyClientAsync(Ayerhs.Core.Entities.AccountManagement.Clients)">
+            <summary>
+            Performs verification on a client object.
+            </summary>
+            <param name="client">The client object to be verified.</param>
+            <returns>A task indicating the completion of verification.</returns>
+        </member>
         <member name="T:Ayerhs.Application.Services.AccountManagement.AccountService">
             <summary>
             This class implements the IAccountService interface and provides concrete methods
             for account management services.
             </summary>
         </member>
-        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.#ctor(Microsoft.Extensions.Logging.ILogger{Ayerhs.Application.Services.AccountManagement.AccountService},Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository)">
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.#ctor(Microsoft.Extensions.Logging.ILogger{Ayerhs.Application.Services.AccountManagement.AccountService},Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository,Ayerhs.Core.Interfaces.Utility.IOtpHelper,Ayerhs.Core.Interfaces.Utility.IEmailService)">
             <summary>
             This class implements the IAccountService interface and provides concrete methods
             for account management services.
@@ -109,6 +143,66 @@
             <param name="inLoginClientDto">A DTO containing email address and password for login.</param>
             <returns>A Task that returns the Client entity if login is successful, otherwise null.</returns>
         </member>
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.GetClientsAsync">
+            <summary>
+            Asynchronously getting registered client list.
+            </summary>
+            <returns>A Task represents list of Clients entity.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.OtpGenerationAndEmailAsync(Ayerhs.Core.Entities.AccountManagement.InOtpRequestDto)">
+            <summary>
+            Asynchronously generate a random OTP and send on email
+            </summary>
+            <param name="inOtpRequestDto">A DTO containing email related data.</param>
+            <returns>A Task that contains a message.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.OtpVerificationAsync(Ayerhs.Core.Entities.AccountManagement.InOtpVerificationDto)">
+            <summary>
+            Verifies an OTP for a given email address.
+            </summary>
+            <param name="inOtpVerificationDto">Data for OTP verification (email and OTP).</param>
+            <returns>True if OTP is valid, False otherwise (with error message).</returns>
+        </member>
+        <member name="T:Ayerhs.Application.Services.Utility.EmailService">
+            <summary>
+            Service class responsible for sending emails, specifically OTP (One-Time Password) emails.
+            Implements the <see cref="T:Ayerhs.Core.Interfaces.Utility.IEmailService"/> interface.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Services.Utility.EmailService.#ctor(Microsoft.Extensions.Options.IOptions{Ayerhs.Core.Entities.Utility.SmtpSettings},Microsoft.Extensions.Logging.ILogger{Ayerhs.Application.Services.Utility.EmailService})">
+            <summary>
+            Service class responsible for sending emails, specifically OTP (One-Time Password) emails.
+            Implements the <see cref="T:Ayerhs.Core.Interfaces.Utility.IEmailService"/> interface.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Services.Utility.EmailService.SendOtpEmailAsync(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Asynchronously sends an email containing a One-Time Password (OTP) to the specified recipient.
+            </summary>
+            <param name="email">The recipient's email address.</param>
+            <param name="otp">The One-Time Password to include in the email body.</param>
+            <param name="body">The custom body content of the email. If not provided, a default message with the OTP code will be used.</param>
+            <param name="isHtml">HTML email body.</param>
+            <returns>An asynchronous task representing the email sending operation.</returns>
+        </member>
+        <member name="T:Ayerhs.Application.Services.Utility.OtpHelper">
+            <summary>
+            Class that implements the IOtpHelper interface for OTP generation.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Services.Utility.OtpHelper.GenerateOtp(System.Int32)">
+            <summary>
+            Generates a random OTP (One-Time Password) string of the specified length.
+            </summary>
+            <param name="length">Optional length of the OTP. Defaults to 6 characters.</param>
+            <returns>A string containing the generated OTP.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.Utility.OtpHelper.GenerateOtpAsync">
+            <summary>
+            Asynchronously generates a new One-Time Password.
+            </summary>
+            <returns>A task that resolves to a string containing the generated OTP.</returns>
+        </member>
         <member name="T:Ayerhs.Controllers.AccountController">
             <summary>
             Controller class for handling account management related operations.
@@ -126,6 +220,13 @@
             <param name="token">The JWT token.</param>
             <returns>A dictionary containing claim types and their values.</returns>
         </member>
+        <member name="M:Ayerhs.Controllers.AccountController.LoginClient(Ayerhs.Core.Entities.AccountManagement.InLoginClientDto)">
+            <summary>
+            This endpoint allows a client user to log in to the system using their email address and password.
+            </summary>
+            <param name="inLoginClientDto">The data transfer object containing client login information (email and password).</param>
+            <returns>An IActionResult representing the HTTP response for the login request. The response object may contain a JWT token, client user object, and claims if login is successful, or an error message otherwise.</returns>
+        </member>
         <member name="M:Ayerhs.Controllers.AccountController.RegisterClient(Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto)">
             <summary>
             Registers a new client user using the provided information.
@@ -133,12 +234,26 @@
             <param name="inRegisterClientDto">The data transfer object containing client registration information.</param>
             <returns>An IActionResult representing the HTTP response for the registration request.</returns>
         </member>
-        <member name="M:Ayerhs.Controllers.AccountController.LoginClient(Ayerhs.Core.Entities.AccountManagement.InLoginClientDto)">
+        <member name="M:Ayerhs.Controllers.AccountController.GetClients">
             <summary>
-            This endpoint allows a client user to log in to the system using their email address and password.
+            Retrieves a list of all registered clients in the system.
+            This endpoint requires authorization (bearer token) to be accessed.
             </summary>
-            <param name="inLoginClientDto">The data transfer object containing client login information (email and password).</param>
-            <returns>An IActionResult representing the HTTP response for the login request. The response object may contain a JWT token, client user object, and claims if login is successful, or an error message otherwise.</returns>
+            <returns>An `IActionResult` containing the list of retrieved clients or an error message if unsuccessful.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.AccountController.OtpGenerationAndEmail(Ayerhs.Core.Entities.AccountManagement.InOtpRequestDto)">
+            <summary>
+            Generates an OTP (One-Time Password) and sends it to the specified email address.
+            </summary>
+            <param name="inOtpRequestDto">The request object containing the email address for which to generate OTP.</param>
+            <returns>An ApiResponse object indicating the success or failure of the operation.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.AccountController.OtpVerification(Ayerhs.Core.Entities.AccountManagement.InOtpVerificationDto)">
+            <summary>
+            Verifies an OTP for a given email address.
+            </summary>
+            <param name="inOtpVerificationDto">Data for OTP verification (email and OTP).</param>
+            <returns>API response containing success/failure status and message.</returns>
         </member>
         <member name="T:Ayerhs.Core.Entities.AccountManagement.ClientRoles">
             <summary>
@@ -331,6 +446,32 @@
             Gets or sets the password of the client attempting to login.
             </summary>
         </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.InOtpRequestDto">
+            <summary>
+            This class represents the InOtpRequestDto data transfer object.
+            It contains the email address for which an OTP is requested.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InOtpRequestDto.Email">
+            <summary>
+            Gets or sets the email address for which an OTP is requested.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.InOtpVerificationDto">
+            <summary>
+            This class represents the data transfer object for InOtpVerification operation.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InOtpVerificationDto.Email">
+            <summary>
+            Gets or sets the email address.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InOtpVerificationDto.Otp">
+            <summary>
+            Gets or sets the one-time verification code (OTP).
+            </summary>
+        </member>
         <member name="T:Ayerhs.Core.Entities.AccountManagement.InRegisterClientDto">
             <summary>
             This class represents a Data Transfer Object (DTO) used for client registration data.
@@ -486,6 +627,34 @@
             </summary>
             <returns>A string representing the transaction ID in the format "yyyyMMddHHmmssfff".</returns>
         </member>
+        <member name="M:Ayerhs.Core.Entities.Utility.ConstantData.GetDefaultOtpHtmlBody(System.String)">
+            <summary>
+            Default email body to send OTP on email.
+            </summary>
+            <param name="otp">Dynamically generated OTP.</param>
+            <returns>Return a HTML string for email body template</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Entities.Utility.ConstantData.GetMinimalistOtpHtmlBody(System.String)">
+            <summary>
+            Minimalist and Clean email body.
+            </summary>
+            <param name="otp">Dynamically generated OTP.</param>
+            <returns>Return a HTML string for email body template</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Entities.Utility.ConstantData.GetProfessionalOtpHtmlBody(System.String)">
+            <summary>
+            Professional and Modern email body.
+            </summary>
+            <param name="otp">Dynamically generated OTP.</param>
+            <returns>Return a HTML string for email body template</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Entities.Utility.ConstantData.GetVibrantOtpHtmlBody(System.String)">
+            <summary>
+            Vibrant and Engaging email body.
+            </summary>
+            <param name="otp">Dynamically generated OTP.</param>
+            <returns>Return a HTML string for email body template</returns>
+        </member>
         <member name="T:Ayerhs.Core.Entities.Utility.CustomErrorCodes">
             <summary>
             This class provides a collection of custom error codes used throughout the application.
@@ -521,9 +690,79 @@
             Error code for Client Account is locked.
             </summary>
         </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.NullRegisteredClients">
+            <summary>
+            Error code for Null Registered Clients
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.OtpGeneration">
+            <summary>
+            Error code for OTP generation.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.OtpVerification">
+            <summary>
+            Error code for OTP Verification.
+            </summary>
+        </member>
         <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.UnknownError">
             <summary>
             Error code indicating an unknown error occurred.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.Utility.OtpStorage">
+            <summary>
+            This class represents a record for storing One-Time Passwords (OTPs).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.OtpStorage.Id">
+            <summary>
+            Unique identifier for the OTP record.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.OtpStorage.Email">
+            <summary>
+            Email address associated with the OTP.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.OtpStorage.Otp">
+            <summary>
+            Randomally generated OTP for respective Email address.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.OtpStorage.GeneratedOn">
+            <summary>
+            Date and time when the OTP was generated.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.OtpStorage.ValidUpto">
+            <summary>
+            Date and time until which the OTP is valid.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.Utility.SmtpSettings">
+            <summary>
+            Holds configuration settings for a SMTP server.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.SmtpSettings.Host">
+            <summary>
+            Gets or sets the hostname or IP address of the SMTP server.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.SmtpSettings.Port">
+            <summary>
+            Gets or sets the port number used by the SMTP server.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.SmtpSettings.Username">
+            <summary>
+            Gets or sets the username for authentication with the SMTP server.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.SmtpSettings.Password">
+            <summary>
+            Gets or sets the password for authentication with the SMTP server.
             </summary>
         </member>
         <member name="T:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository">
@@ -573,6 +812,40 @@
             <param name="clients">The Client entity with the updated data.</param>
             <returns>A Task representing the asynchronous update operation.</returns>
         </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.GetClientsAsync">
+            <summary>
+            Asynchronously getting registered clients
+            </summary>
+            <returns>A Task represents List of Client entity.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.AddOtpAsync(Ayerhs.Core.Entities.Utility.OtpStorage)">
+            <summary>
+            Asynchronously adds OTP details in table.
+            </summary>
+            <param name="otpStorage">The entity to be added.</param>
+            <returns>A Task of entity which added into database.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.GetOtpStorageByEmailAsync(System.String)">
+            <summary>
+            Asynchronously getting OTP stored in database.
+            </summary>
+            <param name="email">An email of client with received.</param>
+            <returns>A Task with entity of OtpStorage</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.UpdateOtpAsync(Ayerhs.Core.Entities.Utility.OtpStorage)">
+            <summary>
+            Asynchronously update OTP details in database.
+            </summary>
+            <param name="otpStorage">The entity to be updated.</param>
+            <returns>A Task of entity which Updated into database.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.VerifyClientAsync(Ayerhs.Core.Entities.AccountManagement.Clients)">
+            <summary>
+            Performs verification on a client object.
+            </summary>
+            <param name="client">The client object to be verified.</param>
+            <returns>A task indicating the completion of verification.</returns>
+        </member>
         <member name="T:Ayerhs.Core.Interfaces.AccountManagement.IAccountService">
             <summary>
             This interface defines methods for account management services.
@@ -591,6 +864,66 @@
             </summary>
             <param name="inLoginClientDto">A DTO containing login credentials.</param>
             <returns>A Task that resolves to a Clients object containing user information on success, or null on failure.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountService.GetClientsAsync">
+            <summary>
+            Asynchronously getting registered client list.
+            </summary>
+            <returns>A Task represents list of Clients entity.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountService.OtpGenerationAndEmailAsync(Ayerhs.Core.Entities.AccountManagement.InOtpRequestDto)">
+            <summary>
+            Asynchronously generate a random OTP and send on email
+            </summary>
+            <param name="inOtpRequestDto">A DTO containing email related data.</param>
+            <returns>A Task that contains a message.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountService.OtpVerificationAsync(Ayerhs.Core.Entities.AccountManagement.InOtpVerificationDto)">
+            <summary>
+            Performs verification of a one-time verification code (OTP).
+            </summary>
+            <param name="inOtpVerificationDto">The data transfer object containing the email and OTP.</param>
+            <returns>A tuple containing a flag indicating success and an optional error message.</returns>
+        </member>
+        <member name="T:Ayerhs.Core.Interfaces.Utility.IEmailService">
+            <summary>
+            Interface for Email Service functionalities.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.Utility.IEmailService.SendOtpEmailAsync(System.String,System.String,System.String,System.Boolean)">
+            <summary>
+            Sends an email containing a One-Time Password (OTP) to the specified recipient.
+            </summary>
+            <param name="email">The recipient's email address.</param>
+            <param name="otp">The One-Time Password to include in the email body.</param>
+            <param name="body">The custom body content of the email. If not provided, a default message with the OTP code will be used.</param>
+            <param name="isHtml">HTML email body</param>
+            <returns>An asynchronous task representing the email sending operation.</returns>
+        </member>
+        <member name="T:Ayerhs.Core.Interfaces.Utility.IJwtTokenGenerator">
+            <summary>
+            Interface defining functionalities for generating JWT tokens.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.Utility.IJwtTokenGenerator.GenerateToken(System.String,System.String,System.String)">
+            <summary>
+            Generates a JSON Web Token (JWT) based on the provided user information.
+            </summary>
+            <param name="userId">Unique identifier of the user.</param>
+            <param name="username">Username of the user.</param>
+            <param name="role">User's role within the system.</param>
+            <returns>A string containing the generated JWT token.</returns>
+        </member>
+        <member name="T:Ayerhs.Core.Interfaces.Utility.IOtpHelper">
+            <summary>
+            Interface that defines functionality for OTP (One-Time Password) generation.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.Utility.IOtpHelper.GenerateOtpAsync">
+            <summary>
+            Asynchronously generates a new One-Time Password.
+            </summary>
+            <returns>A string containing the generated OTP.</returns>
         </member>
         <member name="T:Ayerhs.Infrastructure.Data.ApplicationDbContext">
             <summary>
@@ -615,6 +948,11 @@
         <member name="P:Ayerhs.Infrastructure.Data.ApplicationDbContext.ClientRoles">
             <summary>
             DbSet for the ClientRoles entity.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Infrastructure.Data.ApplicationDbContext.OtpStorages">
+            <summary>
+            DbSet for the OtpStorage entity.
             </summary>
         </member>
         <member name="M:Ayerhs.Infrastructure.Data.ApplicationDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
@@ -664,6 +1002,30 @@
             <inheritdoc />
         </member>
         <member name="M:Ayerhs.Migrations.AccountManagementModifyClientsTable.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Ayerhs.Migrations.OtpStorageTableCreated">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.OtpStorageTableCreated.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.OtpStorageTableCreated.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.OtpStorageTableCreated.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Ayerhs.Migrations.OtpStorageTableUpdated">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.OtpStorageTableUpdated.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.OtpStorageTableUpdated.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.OtpStorageTableUpdated.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>
