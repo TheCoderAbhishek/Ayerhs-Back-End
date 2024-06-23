@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AyerhsTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e31cdf617f0b6f3a2d96a44db9523eed278bc0c3")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+26ec9c6d8d8a8c6ba59f24420fb83738ed4907cd")]
 [assembly: System.Reflection.AssemblyProductAttribute("AyerhsTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AyerhsTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
