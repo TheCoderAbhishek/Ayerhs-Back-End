@@ -37,6 +37,13 @@
             <param name="username">The username of the Client to retrieve.</param>
             <returns>A Task that returns the Client entity with the matching username, or null if not found.</returns>
         </member>
+        <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.GetClientByMobileNumberAsync(System.String)">
+            <summary>
+            Asynchronously retrieves a Client entity by mobile number.
+            </summary>
+            <param name="mobileNumber">The mobile number of the Client to retrieve.</param>
+            <returns>A Task that returns the Client entity with the matching mobile number, or null if not found.</returns>
+        </member>
         <member name="M:Ayerhs.Application.Repositories.AccountManagement.AccountRepository.GetRoleByName(System.Int32)">
             <summary>
             Asynchronously retrieves the name of a role by its ID.
@@ -98,7 +105,7 @@
             for account management services.
             </summary>
         </member>
-        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.#ctor(Microsoft.Extensions.Logging.ILogger{Ayerhs.Application.Services.AccountManagement.AccountService},Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository,Ayerhs.Core.Interfaces.Utility.IOtpHelper,Ayerhs.Core.Interfaces.Utility.IEmailService)">
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.#ctor(Microsoft.Extensions.Logging.ILogger{Ayerhs.Application.Services.AccountManagement.AccountService},Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository,Ayerhs.Core.Interfaces.Utility.IOtpHelper,Ayerhs.Core.Interfaces.Utility.IEmailService,Ayerhs.Core.Interfaces.Utility.IAesEncryptionDecryptionService)">
             <summary>
             This class implements the IAccountService interface and provides concrete methods
             for account management services.
@@ -163,6 +170,36 @@
             <param name="inOtpVerificationDto">Data for OTP verification (email and OTP).</param>
             <returns>True if OTP is valid, False otherwise (with error message).</returns>
         </member>
+        <member name="M:Ayerhs.Application.Services.AccountManagement.AccountService.ForgotClientPasswordAsync(Ayerhs.Core.Entities.AccountManagement.InForgotClientPassword)">
+            <summary>
+            Resets a client's password based on the provided information in the `inForgotClientPassword` object.
+            </summary>
+            <param name="inForgotClientPassword">An object containing the client's email and potentially their new password.</param>
+            <returns>A tuple indicating success (bool) and an optional message (string) related to the operation.</returns>
+        </member>
+        <member name="T:Ayerhs.Application.Services.Utility.AesEncryptionDecryptionService">
+            <summary>
+            Service for encrypting and decrypting data using AES algorithm.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Services.Utility.AesEncryptionDecryptionService.#ctor(Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            Service for encrypting and decrypting data using AES algorithm.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Application.Services.Utility.AesEncryptionDecryptionService._key">
+            <summary>
+            The AES key used for encryption and decryption.
+            This value is retrieved from the configuration using the key "AESKey".
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Services.Utility.AesEncryptionDecryptionService.Decrypt(System.String)">
+            <summary>
+            Decrypts a base64 encoded string that was previously encrypted using AES.
+            </summary>
+            <param name="encryptedText">The base64 encoded string containing the encrypted data.</param>
+            <returns>The decrypted string.</returns>
+        </member>
         <member name="T:Ayerhs.Application.Services.Utility.EmailService">
             <summary>
             Service class responsible for sending emails, specifically OTP (One-Time Password) emails.
@@ -175,12 +212,13 @@
             Implements the <see cref="T:Ayerhs.Core.Interfaces.Utility.IEmailService"/> interface.
             </summary>
         </member>
-        <member name="M:Ayerhs.Application.Services.Utility.EmailService.SendOtpEmailAsync(System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Ayerhs.Application.Services.Utility.EmailService.SendOtpEmailAsync(System.String,System.String,System.String,System.String,System.Boolean)">
             <summary>
             Asynchronously sends an email containing a One-Time Password (OTP) to the specified recipient.
             </summary>
             <param name="email">The recipient's email address.</param>
             <param name="otp">The One-Time Password to include in the email body.</param>
+            <param name="subject">The custom email subject.</param>
             <param name="body">The custom body content of the email. If not provided, a default message with the OTP code will be used.</param>
             <param name="isHtml">HTML email body.</param>
             <returns>An asynchronous task representing the email sending operation.</returns>
@@ -254,6 +292,13 @@
             </summary>
             <param name="inOtpVerificationDto">Data for OTP verification (email and OTP).</param>
             <returns>API response containing success/failure status and message.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.AccountController.ForgotClientPassword(Ayerhs.Core.Entities.AccountManagement.InForgotClientPassword)">
+            <summary>
+            Resets a client's password based on their email.
+            </summary>
+            <param name="inForgotClientPassword">Email address of the client requesting password reset.</param>
+            <returns>An HTTP response indicating success or failure.</returns>
         </member>
         <member name="T:Ayerhs.Core.Entities.AccountManagement.ClientRoles">
             <summary>
@@ -431,6 +476,27 @@
             Client record is deleted.
             </summary>
         </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.InForgotClientPassword">
+            <summary>
+            This class represents the data used when a client forgets their password and requests a reset.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InForgotClientPassword.ClientEmail">
+            <summary>
+            The email address of the client who forgot their password.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InForgotClientPassword.Otp">
+            <summary>
+            The OTP received on gmail for forgot password
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InForgotClientPassword.ClientPassword">
+            <summary>
+            The new password for the client (used after reset). 
+            This property might be null if the request is only to send a reset email.
+            </summary>
+        </member>
         <member name="T:Ayerhs.Core.Entities.AccountManagement.InLoginClientDto">
             <summary>
             This class represents the InLoginClientDto object used for login requests.
@@ -455,6 +521,26 @@
         <member name="P:Ayerhs.Core.Entities.AccountManagement.InOtpRequestDto.Email">
             <summary>
             Gets or sets the email address for which an OTP is requested.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.AccountManagement.InOtpRequestDto.Use">
+            <summary>
+            Gets or sets the purpose for which the OTP is requested.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.AccountManagement.OtpUse">
+            <summary>
+            This enumeration defines the possible purposes for requesting an OTP.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.AccountManagement.OtpUse.AccountActivate">
+            <summary>
+            The OTP is used for account activation.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.AccountManagement.OtpUse.ForgotClientPassword">
+            <summary>
+            The OTP is used for forgotten client password reset.
             </summary>
         </member>
         <member name="T:Ayerhs.Core.Entities.AccountManagement.InOtpVerificationDto">
@@ -705,6 +791,16 @@
             Error code for OTP Verification.
             </summary>
         </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.AccountActivation">
+            <summary>
+            Error code for Account Activation
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.ForgotClientPassword">
+            <summary>
+            Error code for Forgot Password
+            </summary>
+        </member>
         <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.UnknownError">
             <summary>
             Error code indicating an unknown error occurred.
@@ -738,6 +834,11 @@
         <member name="P:Ayerhs.Core.Entities.Utility.OtpStorage.ValidUpto">
             <summary>
             Date and time until which the OTP is valid.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.Utility.OtpStorage.Use">
+            <summary>
+            Interger value to check why OTP generated
             </summary>
         </member>
         <member name="T:Ayerhs.Core.Entities.Utility.SmtpSettings">
@@ -790,6 +891,13 @@
             </summary>
             <param name="username">The username of the Client to retrieve.</param>
             <returns>A Task that returns the Client entity with the matching username, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.GetClientByMobileNumberAsync(System.String)">
+            <summary>
+            Asynchronously retrieves a Client entity by mobile number.
+            </summary>
+            <param name="mobileNumber">The mobile number of the Client to retrieve.</param>
+            <returns>A Task that returns the Client entity with the matching mobile number, or null if not found.</returns>
         </member>
         <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountRepository.GetRoleByName(System.Int32)">
             <summary>
@@ -885,17 +993,37 @@
             <param name="inOtpVerificationDto">The data transfer object containing the email and OTP.</param>
             <returns>A tuple containing a flag indicating success and an optional error message.</returns>
         </member>
+        <member name="M:Ayerhs.Core.Interfaces.AccountManagement.IAccountService.ForgotClientPasswordAsync(Ayerhs.Core.Entities.AccountManagement.InForgotClientPassword)">
+            <summary>
+            Attempts to reset a client's password based on the provided information.
+            </summary>
+            <param name="inForgotClientPassword">An object containing the client's email and potentially their new password.</param>
+            <returns>A tuple indicating success (bool) and an optional message (string) related to the operation.</returns>
+        </member>
+        <member name="T:Ayerhs.Core.Interfaces.Utility.IAesEncryptionDecryptionService">
+            <summary>
+            Interface for a service that encrypts and decrypts data using the Advanced Encryption Standard (AES) algorithm.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.Utility.IAesEncryptionDecryptionService.Decrypt(System.String)">
+            <summary>
+            Decrypts a string that was previously encrypted using the service's encryption method.
+            </summary>
+            <param name="encryptedText">The encrypted text to decrypt.</param>
+            <returns>The decrypted plain text.</returns>
+        </member>
         <member name="T:Ayerhs.Core.Interfaces.Utility.IEmailService">
             <summary>
             Interface for Email Service functionalities.
             </summary>
         </member>
-        <member name="M:Ayerhs.Core.Interfaces.Utility.IEmailService.SendOtpEmailAsync(System.String,System.String,System.String,System.Boolean)">
+        <member name="M:Ayerhs.Core.Interfaces.Utility.IEmailService.SendOtpEmailAsync(System.String,System.String,System.String,System.String,System.Boolean)">
             <summary>
             Sends an email containing a One-Time Password (OTP) to the specified recipient.
             </summary>
             <param name="email">The recipient's email address.</param>
             <param name="otp">The One-Time Password to include in the email body.</param>
+            <param name="subject">The custom email subject.</param>
             <param name="body">The custom body content of the email. If not provided, a default message with the OTP code will be used.</param>
             <param name="isHtml">HTML email body</param>
             <returns>An asynchronous task representing the email sending operation.</returns>
@@ -1026,6 +1154,18 @@
             <inheritdoc />
         </member>
         <member name="M:Ayerhs.Migrations.OtpStorageTableUpdated.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Ayerhs.Migrations.OtpStorageTableUpdateWithUseValue">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.OtpStorageTableUpdateWithUseValue.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.OtpStorageTableUpdateWithUseValue.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.OtpStorageTableUpdateWithUseValue.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>
