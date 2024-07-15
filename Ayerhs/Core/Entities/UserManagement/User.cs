@@ -1,5 +1,6 @@
 ﻿using Ayerhs.Core.Entities.AccountManagement;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Ayerhs.Core.Entities.UserManagement
 {
@@ -66,6 +67,12 @@ namespace Ayerhs.Core.Entities.UserManagement
         /// </summary>
         [Required]
         public int UserRoleId { get; set; }
+
+        /// <summary>
+        /// Identifier of the group the user belongs to.
+        /// </summary>
+        [Required]
+        public int GroupId { get; set; }
 
         /// <summary>
         /// Flag indicating whether the user account is active.
@@ -135,9 +142,16 @@ namespace Ayerhs.Core.Entities.UserManagement
         public string? Salt { get; set; }
 
         /// <summary>
-        /// Navigation property for the user's client roles (collection).
+        /// Database Relationship with Group entity
         /// </summary>
-        public ICollection<ClientRoles>? ClientRoles { get; set; }
+        [ForeignKey("GroupId")]
+        public Group? Groups { get; set; }
+
+        /// <summary>
+        /// Database Relationship with Partition entity
+        /// </summary>
+        [ForeignKey("PartitionId")]
+        public Partition? Partitions { get; set; }
     }
 
     /// <summary>

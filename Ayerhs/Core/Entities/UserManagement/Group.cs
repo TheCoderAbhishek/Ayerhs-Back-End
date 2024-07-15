@@ -66,5 +66,10 @@ namespace Ayerhs.Core.Entities.UserManagement
         /// </summary>
         [Required]
         public Partition? Partition { get; set; }
+
+        /// <summary>
+        /// Collection of users associated with this group.
+        /// </summary>
+        public ICollection<User>? Users { get; set; }
     }
 }
