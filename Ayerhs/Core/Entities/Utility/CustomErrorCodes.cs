@@ -147,6 +147,11 @@
         /// </summary>
         public const string EnableDisableGroupError = "ERR-3000-015";
 
+        /// <summary>
+        /// Error code indicating error occurred while adding new user.
+        /// </summary>
+        public const string AddUserError = "ERR-3000-016";
+
 
         /// <summary>
         /// Error code for Unknow Error occurred while User Management

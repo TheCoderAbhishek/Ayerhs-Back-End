@@ -36,6 +36,7 @@ namespace Ayerhs.Core.Interfaces.UserManagement
         Task<(bool, string)> DeletePartitionAsync(int id);
         #endregion
 
+        #region Groups related action methods
         /// <summary>
         /// Adds group under a specific partition in user management
         /// </summary>
@@ -91,5 +92,17 @@ namespace Ayerhs.Core.Interfaces.UserManagement
         /// <param name="id">The ID of the group to enable or disable.</param>
         /// <returns>A tuple indicating success or failure and a message.</returns>
         Task<(bool, string)> EnableDisableGroupAsync(int id);
+        #endregion
+
+        #region User related action methods
+
+        /// <summary>
+        /// Adds a new user to the system asynchronously.
+        /// </summary>
+        /// <param name="inAddUserDto">The user data to be added.</param>
+        /// <returns>A tuple containing a boolean indicating success and an error message if applicable.</returns>
+        Task<(bool, string)> AddUserAsync(InAddUserDto inAddUserDto);
+
+        #endregion
     }
 }

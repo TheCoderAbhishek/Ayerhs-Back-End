@@ -486,5 +486,45 @@ namespace Ayerhs.Controllers
             }
         }
         #endregion
+
+        /// <summary>
+        /// Adds a new user to the system.
+        /// </summary>
+        /// <param name="inAddUserDto">The user data to be added.</param>
+        /// <returns>An API response indicating success or failure with appropriate status codes and messages.</returns>
+        [ProducesResponseType(typeof(ApiResponse<string>), 200)]
+        [Route("AddUser")]
+        [HttpPost]
+        public async Task<IActionResult> AddUser(InAddUserDto inAddUserDto)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    var (success, message) = await _userService.AddUserAsync(inAddUserDto);
+                    if (success)
+                    {
+                        _logger.LogInformation("{Message}", message);
+                        return Ok(new ApiResponse<string>(status: "Success", statusCode: 200, response: 1, successMessage: message, txn: ConstantData.GenerateTransactionId(), returnValue: message));
+                    }
+                    else
+                    {
+                        _logger.LogError("Error occurred while adding user {Message}", message);
+                        return Ok(new ApiResponse<string>(status: "Error", statusCode: 200, response: 0, errorMessage: message, errorCode: CustomErrorCodes.AddUserError, txn: ConstantData.GenerateTransactionId(), returnValue: message));
+                    }
+                }
+                else
+                {
+                    string errMsg = "Invalid Modal Sate";
+                    _logger.LogError("{Message}", errMsg);
+                    return BadRequest(new ApiResponse<string>(status: "Error", statusCode: 400, response: 0, errorMessage: errMsg, errorCode: CustomErrorCodes.UserManagementValidationError, txn: ConstantData.GenerateTransactionId(), returnValue: errMsg));
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while adding user {Message}", ex.Message);
+                return BadRequest(new ApiResponse<string>(status: "Error", statusCode: 500, response: 0, errorMessage: ex.Message, errorCode: CustomErrorCodes.UserManagementUnknownError, txn: ConstantData.GenerateTransactionId(), returnValue: ex.Message));
+            }
+        }
     }
 }

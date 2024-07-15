@@ -113,5 +113,20 @@ namespace Ayerhs.Core.Interfaces.UserManagement
         /// <param name="partitionId">The ID of the partition to search in.</param>
         /// <returns>A task that represents the asynchronous operation. The task result contains a nullable boolean indicating whether the group exists.</returns>
         Task<bool?> GetGroupByNameAndPartitionAsync(string groupName, int partitionId);
+
+        /// <summary>
+        /// Determines if a user with the specified email belongs to the given group.
+        /// </summary>
+        /// <param name="email">The email address of the user.</param>
+        /// <param name="groupId">The Id of the group to check membership in.</param>
+        /// <returns>True if the user is part of the group, false otherwise. Null if an error occurs.</returns>
+        Task<bool?> CheckUserIsPartSameGroup(string email, int groupId);
+
+        /// <summary>
+        /// Adds a new user to the database asynchronously.
+        /// </summary>
+        /// <param name="user">The user object to be added.</param>
+        /// <returns>True if the user was added successfully, false otherwise.</returns>
+        Task<bool?> AddUserAsync(User user);
     }
 }

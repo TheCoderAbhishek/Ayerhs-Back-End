@@ -280,5 +280,38 @@ namespace Ayerhs.Application.Repositories.UserManagement
             return await _context.Groups
                          .AnyAsync(g => g.GroupName == groupName && g.PartitionId == partitionId);
         }
+
+        /// <summary>
+        /// Determines if a user with the specified email belongs to the given group.
+        /// </summary>
+        /// <param name="email">The email address of the user.</param>
+        /// <param name="groupId">The Id of the group to check membership in.</param>
+        /// <returns>True if the user is part of the group, false otherwise. Null if an error occurs.</returns>
+        public async Task<bool?> CheckUserIsPartSameGroup(string email, int groupId)
+        {
+            return await _context.Users
+                .AnyAsync(u => u.UserEmail == email && u.GroupId == groupId);
+        }
+
+        /// <summary>
+        /// Adds a new user to the database asynchronously.
+        /// </summary>
+        /// <param name="user">The user object to be added.</param>
+        /// <returns>True if the user was added successfully, false otherwise.</returns>
+        public async Task<bool?> AddUserAsync(User user)
+        {
+            await _context.Users.AddAsync(user);
+            try
+            {
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("User added successfully.");
+                return true;
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while adding user {Message}", ex.Message);
+                return false;
+            }
+        }
     }
 }

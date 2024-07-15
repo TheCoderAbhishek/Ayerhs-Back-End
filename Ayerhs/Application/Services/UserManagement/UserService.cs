@@ -1,5 +1,9 @@
-﻿using Ayerhs.Core.Entities.UserManagement;
+﻿using Ayerhs.Core.Entities.AccountManagement;
+using Ayerhs.Core.Entities.UserManagement;
 using Ayerhs.Core.Interfaces.UserManagement;
+using Konscious.Security.Cryptography;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace Ayerhs.Application.Services.UserManagement
 {
@@ -12,6 +16,7 @@ namespace Ayerhs.Application.Services.UserManagement
         private readonly IUserRepository _userRepository = userRepository;
 
         #region Private Helper Methods
+
         /// <summary>
         /// Generates a new GUID.
         /// </summary>
@@ -20,6 +25,39 @@ namespace Ayerhs.Application.Services.UserManagement
         {
             return Guid.NewGuid().ToString();
         }
+
+        /// <summary>
+        /// Generates a random base64 encoded salt string of length 16 bytes.
+        /// </summary>
+        /// <returns>A base64 encoded string representing the random salt.</returns>
+        private static string GetGenerateSalt()
+        {
+            var rng = RandomNumberGenerator.Create();
+            var buffer = new byte[16];
+            rng.GetBytes(buffer);
+            return Convert.ToBase64String(buffer);
+        }
+
+        /// <summary>
+        /// Hashes a password using SHA256 with a provided salt.
+        /// </summary>
+        /// <param name="password">The password to be hashed.</param>
+        /// <param name="salt">The salt to be used for hashing.</param>
+        /// <returns>A base64 encoded string representing the hashed password.</returns>
+        private static string HashPassword(string password, string salt)
+        {
+            var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password))
+            {
+                Salt = Convert.FromBase64String(salt),
+                DegreeOfParallelism = 8,
+                MemorySize = 65536,
+                Iterations = 4
+            };
+
+            var hash = argon2.GetBytes(16);
+            return Convert.ToBase64String(hash);
+        }
+
         #endregion
 
         #region Partitions related action methods
@@ -550,6 +588,93 @@ namespace Ayerhs.Application.Services.UserManagement
                 return (false, message);
             }
         }
+        #endregion
+
+        #region User related action methods
+
+        /// <summary>
+        /// Asynchronously attempts to add a new user to a group.
+        /// </summary>
+        /// <param name="inAddUserDto">The data transfer object containing user information.</param>
+        /// <returns>A tuple indicating success and a corresponding message.</returns>
+        public async Task<(bool, string)> AddUserAsync(InAddUserDto inAddUserDto)
+        {
+            try
+            {
+                Group? isGroupPresent = await _userRepository.GetGroupByIdAsync(inAddUserDto.GroupId);
+                if (isGroupPresent != null)
+                {
+                    bool isUserAlreadyPartGroup = (bool) await _userRepository.CheckUserIsPartSameGroup(inAddUserDto.UserEmail!, isGroupPresent.Id);
+                    if (!isUserAlreadyPartGroup)
+                    {
+                        if (true)
+                        {
+                            Partition? partition = await _userRepository.GetPartitionByIdAsync(isGroupPresent.PartitionId);
+
+                            var salt = GetGenerateSalt();
+                            var hashedPassword = HashPassword(inAddUserDto.UserPassword!, salt);
+
+                            User user = new()
+                            {
+                                UserId = GenerateNewGuid(),
+                                UserName = inAddUserDto.UserName,
+                                UserEmail = inAddUserDto.UserEmail,
+                                UserPassword = hashedPassword,
+                                UserMobileNumber = inAddUserDto.UserMobileNumber,
+                                Partition = partition!.PartitionName,
+                                Group = isGroupPresent.GroupName,
+                                UserRoleId = inAddUserDto.RoleId,
+                                GroupId = inAddUserDto.GroupId,
+                                UserIsActive = false,
+                                UserIsLocked = false,
+                                UserStatus = UserStatus.Inactive,
+                                UserLoginAttemptCount = 0,
+                                UserDeletedState = UserDeleteState.NotDeleted,
+                                UserCreatedOn = DateTime.UtcNow,
+                                UserUpdatedOn = DateTime.UtcNow,
+                                UserLastLoginOn = DateTime.UtcNow,
+                                UserLockedUntil = null,
+                                UserDeletedOn = null,
+                                UserAutoDeletedOn = null,
+                                Salt = Convert.ToBase64String(Encoding.UTF8.GetBytes(salt)),
+                                PartitionId = partition!.Id
+                            };
+                            var res = (bool)await _userRepository.AddUserAsync(user);
+                            if (res)
+                            {
+                                string message = $"User {inAddUserDto.UserName} successfully added under group {isGroupPresent.GroupName}";
+                                _logger.LogError("{Message}", message);
+                                return (true, message);
+                            }
+                            else
+                            {
+                                string message = $"An error occurred while adding user {inAddUserDto.UserEmail} into group {isGroupPresent.GroupName}.";
+                                _logger.LogError("{Message}", message);
+                                return (false, message);
+                            } 
+                        }
+                    }
+                    else
+                    {
+                        string message = $"User {inAddUserDto.UserEmail} is already part of Group {isGroupPresent.GroupName}.";
+                        _logger.LogError("{Message}", message);
+                        return (false, message);
+                    }
+                }
+                else
+                {
+                    string message = "Invalid Group ID Provided.";
+                    _logger.LogError("{Message} {Id}", message, inAddUserDto.GroupId);
+                    return (false, message);
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while adding user {Message}", ex.Message);
+                return (false, $"An error occurred while adding user {ex.Message}");
+            }
+        }
+
         #endregion
     }
 }

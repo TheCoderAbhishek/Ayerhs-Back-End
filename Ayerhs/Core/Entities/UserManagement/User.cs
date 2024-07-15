@@ -75,6 +75,11 @@ namespace Ayerhs.Core.Entities.UserManagement
         public int GroupId { get; set; }
 
         /// <summary>
+        /// Identifier of the partition the user belongs to.
+        /// </summary>
+        public int PartitionId { get; set; }
+
+        /// <summary>
         /// Flag indicating whether the user account is active.
         /// </summary>
         [Required]

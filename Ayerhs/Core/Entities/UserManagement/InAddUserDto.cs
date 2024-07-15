@@ -3,7 +3,7 @@
     /// <summary>
     /// This class represents the data model for adding a new user.
     /// </summary>
-    public class InAddUser
+    public class InAddUserDto
     {
         /// <summary>
         /// User's display name.
@@ -26,12 +26,8 @@
         /// </summary>
         public int RoleId { get; set; }
         /// <summary>
-        /// User partition identifier (specific meaning depends on your application logic).
-        /// </summary>
-        public string? UserPartition { get; set; }
-        /// <summary>
         /// User group identifier (specific meaning depends on your application logic).
         /// </summary>
-        public string? UserGroup { get; set; }
+        public int GroupId { get; set; }
     }
 }
