@@ -60,21 +60,21 @@
             },
             "MailKit": {
               "target": "Package",
-              "version": "[4.6.0, )"
+              "version": "[4.7.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.IdentityModel.JsonWebTokens": {
               "target": "Package",
-              "version": "[7.6.2, )"
+              "version": "[7.6.3, )"
             },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
@@ -82,7 +82,7 @@
             },
             "MimeKit": {
               "target": "Package",
-              "version": "[4.6.0, )"
+              "version": "[4.7.0, )"
             },
             "Moq": {
               "target": "Package",
@@ -96,13 +96,13 @@
             },
             "xunit": {
               "target": "Package",
-              "version": "[2.8.1, )"
+              "version": "[2.9.0, )"
             },
             "xunit.runner.visualstudio": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[2.8.1, )"
+              "version": "[2.8.2, )"
             }
           },
           "imports": [
@@ -121,7 +121,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
@@ -177,35 +177,35 @@
             },
             "MailKit": {
               "target": "Package",
-              "version": "[4.6.0, )"
+              "version": "[4.7.0, )"
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.7, )"
             },
             "Microsoft.IdentityModel.JsonWebTokens": {
               "target": "Package",
-              "version": "[7.6.2, )"
+              "version": "[7.6.3, )"
             },
             "MimeKit": {
               "target": "Package",
-              "version": "[4.6.0, )"
+              "version": "[4.7.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",
@@ -237,7 +237,7 @@
             },
             "Serilog.Sinks.File": {
               "target": "Package",
-              "version": "[5.0.0, )"
+              "version": "[6.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -245,7 +245,7 @@
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[7.6.2, )"
+              "version": "[7.6.3, )"
             }
           },
           "imports": [
@@ -267,7 +267,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

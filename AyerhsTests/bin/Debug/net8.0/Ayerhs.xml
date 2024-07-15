@@ -99,6 +99,126 @@
             <param name="client">The client object to be verified.</param>
             <returns>A task indicating the completion of verification.</returns>
         </member>
+        <member name="T:Ayerhs.Application.Repositories.UserManagement.UserRepository">
+            <summary>
+            This class provides functionalities to interact with User data in the application.
+            Inherits from the ILogger interface and implements the IUserRepository interface.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.#ctor(Microsoft.Extensions.Logging.ILogger{Ayerhs.Application.Repositories.UserManagement.UserRepository},Ayerhs.Infrastructure.Data.ApplicationDbContext)">
+            <summary>
+            This class provides functionalities to interact with User data in the application.
+            Inherits from the ILogger interface and implements the IUserRepository interface.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.AddPartitionAsync(Ayerhs.Core.Entities.UserManagement.Partition)">
+            <summary>
+            Adds a new partition asynchronously to the database.
+            </summary>
+            <param name="partition">The partition object to be added.</param>
+            <returns>A task that returns true if the partition is added successfully, false otherwise.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.GetPartitionDetailsByName(System.String)">
+            <summary>
+            Asynchronously retrieves details of a partition based on its name.
+            </summary>
+            <param name="partitionName">The name of the partition to search for.</param>
+            <returns>A task that returns the partition details if found, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.GetPartitionsAsync">
+            <summary>
+            Asynchronously retrieves a list of all Partition entities from the database.
+            </summary>
+            <returns>A task that resolves to a list of Partition objects.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.GetPartitionByIdAsync(System.Int32)">
+            <summary>
+            Asynchronously retrieves a partition by its unique identifier.
+            </summary>
+            <param name="id">The unique identifier of the partition to retrieve.</param>
+            <returns>A task that resolves to a Partition object if found, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.UpdatePartitionsByNameAsync(Ayerhs.Core.Entities.UserManagement.Partition)">
+            <summary>
+            Updates a partition in the database based on the provided partition object.
+            This method assumes the partition object has its identifier set for identification during update.
+            </summary>
+            <param name="partition">The Partition object containing the updated information.</param>
+            <returns>A task that resolves to a nullable bool indicating success (true) or failure (null) upon update.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.DeletePartitionByIdAsync(System.Int32)">
+            <summary>
+            Deletes a partition by ID asynchronously.
+            </summary>
+            <param name="id">Partition ID.</param>
+            <returns>True on success, False otherwise.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.GetGroupDetailsByNameAndPartitionAsync(System.String,System.Int32)">
+            <summary>
+            Asynchronously retrieve details of a group based on its name.
+            </summary>
+            <param name="groupName">The name of the group to search for.</param>
+            <param name="partitionId">The ID of the partition to search for.</param>
+            <returns>A task that returns the partition details if found, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.AddGroupAsync(Ayerhs.Core.Entities.UserManagement.Group)">
+            <summary>
+            Adds a new group asynchronously to the database.
+            </summary>
+            <param name="group">The group object to be added.</param>
+            <returns>A task that returns true if the group is added successfully, false otherwise.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.GetGroupsAsync">
+            <summary>
+            Asynchronously retrieves a list of all groups from the data context.
+            </summary>
+            <returns>A task that resolves to a list of Group objects.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.GetGroupsByPartitionAsync(System.Int32)">
+            <summary>
+            Asynchronously retrieves a list of groups for a specific partition from the data context.
+            </summary>
+            <param name="partitionId">The ID of the partition to retrieve groups for.</param>
+            <returns>A task that resolves to a list of Group objects for the specified partition.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.GetGroupByIdAsync(System.Int32)">
+            <summary>
+            Gets a group asynchronously by its identifier.
+            </summary>
+            <param name="id">The identifier of the group to retrieve.</param>
+            <returns>A Task that returns the group if found, otherwise null.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.UpdateGroupAsync(Ayerhs.Core.Entities.UserManagement.Group)">
+            <summary>
+            Updates a group asynchronously.
+            </summary>
+            <param name="group">The group object containing the updated information.</param>
+            <returns>A Task that returns true if the update was successful, otherwise false.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.DeleteGroupAsync(System.Int32)">
+            <summary>
+            Asynchronously attempts to delete a group from the database based on the provided ID.
+            </summary>
+            <param name="id">The ID of the group to delete.</param>
+            <returns>A task that returns true if the deletion was successful, false otherwise.</returns>
+            <exception cref="T:System.Exception">An error occurred while deleting the group.</exception>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.ChangePartitionOfGroupAsync(System.Int32,System.Int32)">
+            <summary>
+            Changes the partition of a group.
+            </summary>
+            <param name="groupId">The ID of the group.</param>
+            <param name="partitionId">The ID of the new partition.</param>
+            <returns>True if the partition was changed successfully, false if group not found, null otherwise.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Repositories.UserManagement.UserRepository.GetGroupByNameAndPartitionAsync(System.String,System.Int32)">
+            <summary>
+            Determines if a group with the specified name exists in the given partition.
+            </summary>
+            <param name="groupName">The name of the group to search for.</param>
+            <param name="partitionId">The ID of the partition to search in.</param>
+            <returns>True if a group with the specified name and partition ID exists, otherwise False or null if no group is found.</returns>
+        </member>
         <member name="T:Ayerhs.Application.Services.AccountManagement.AccountService">
             <summary>
             This class implements the IAccountService interface and provides concrete methods
@@ -176,6 +296,106 @@
             </summary>
             <param name="inForgotClientPassword">An object containing the client's email and potentially their new password.</param>
             <returns>A tuple indicating success (bool) and an optional message (string) related to the operation.</returns>
+        </member>
+        <member name="T:Ayerhs.Application.Services.UserManagement.UserService">
+            <summary>
+            Implements the IUserService interface for user management operations.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.#ctor(Microsoft.Extensions.Logging.ILogger{Ayerhs.Application.Services.UserManagement.UserService},Ayerhs.Core.Interfaces.UserManagement.IUserRepository)">
+            <summary>
+            Implements the IUserService interface for user management operations.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.GenerateNewGuid">
+            <summary>
+            Generates a new GUID.
+            </summary>
+            <returns>A new GUID string.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.AddPartitionAsync(System.String)">
+            <summary>
+            Adds a partition to the user management system.
+            </summary>
+            <param name="partitionName">The name of the partition to add.</param>
+            <returns>A task that returns a tuple indicating success and an optional error message.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.GetPartitionsAsync">
+            <summary>
+            Asynchronously retrieves a list of all Partition entities from the database.
+            </summary>
+            <returns> A task that resolves to a list of Partition objects, or null if an error occurs.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.UpdatePartitionAsync(Ayerhs.Core.Entities.UserManagement.InUpdatePartition)">
+            <summary>
+            Updates a partition asynchronously and returns success/failure with message.
+            </summary>
+            <param name="inUpdatePartition">The entity contains id and name of the partition to be updated.</param>
+            <returns>A task resolving to (success, message) tuple.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.DeletePartitionAsync(System.Int32)">
+            <summary>
+            Deletes a partition by ID asynchronously. Logs info/errors.
+            </summary>
+            <param name="id">Partition ID.</param>
+            <returns>(success, error message).</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.AddGroupAsync(Ayerhs.Core.Entities.UserManagement.InAddGroupDto)">
+            <summary>
+            Adds a new group to the system under a specified partition.
+            </summary>
+            <param name="inAddGroupDto">An object containing details of the group to be added.</param>
+            <returns>(bool, string): A tuple indicating success (bool) and a message (string) describing the outcome.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.GetGroupsAsync(System.Int32)">
+            <summary>
+            Retrieves groups asynchronously based on partition ID:
+            </summary>
+            <param name="partitionId">The partition ID (0 for all groups).</param>
+            <returns>A task that resolves to a list of Group objects or null (on error).</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.UpdateGroupAsync(Ayerhs.Core.Entities.UserManagement.InUpdateGroupDto)">
+            <summary>
+            Updates a group asynchronously.
+            </summary>
+            <param name="inUpdateGroupDto">The DTO containing the updated group information.</param>
+            <returns>A Task that returns a tuple containing a boolean indicating success and a message describing the outcome.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.SoftDeleteGroupAsync(System.Int32)">
+            <summary>
+            Soft deletes a group asynchronously.
+            </summary>
+            <param name="id">The ID of the group to soft delete.</param>
+            <returns>A tuple containing a boolean indicating success and a message describing the outcome.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.RecoverDeletedGroupAsync(System.Int32)">
+            <summary>
+            Recovers a previously soft-deleted group asynchronously.
+            </summary>
+            <param name="id">The ID of the group to recover.</param>
+            <returns>A tuple containing a boolean indicating success and a message describing the outcome.</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.DeleteGroupAsync(System.Int32)">
+            <summary>
+            Asynchronously attempts to delete a group based on the provided ID.
+            </summary>
+            <param name="id">The ID of the group to delete.</param>
+            <returns>A task that returns a tuple indicating the success of the deletion and a message.</returns>
+            <exception cref="T:System.ArgumentOutOfRangeException">Thrown if the provided group ID is less than or equal to zero.</exception>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.ChangePartitionGroupAsync(Ayerhs.Core.Entities.UserManagement.InChangePartitionGroup)">
+            <summary>
+            Changes the partition of a group.
+            </summary>
+            <param name="inChangePartitionGroup">The input model containing group and partition IDs.</param>
+            <returns>A tuple indicating success (bool) and a descriptive message (string).</returns>
+        </member>
+        <member name="M:Ayerhs.Application.Services.UserManagement.UserService.EnableDisableGroupAsync(System.Int32)">
+            <summary>
+            Enables or disables a group based on the provided group ID.
+            </summary>
+            <param name="id">The ID of the group to enable or disable.</param>
+            <returns>A tuple indicating success or failure and a message.</returns>
         </member>
         <member name="T:Ayerhs.Application.Services.Utility.AesEncryptionDecryptionService">
             <summary>
@@ -299,6 +519,102 @@
             </summary>
             <param name="inForgotClientPassword">Email address of the client requesting password reset.</param>
             <returns>An HTTP response indicating success or failure.</returns>
+        </member>
+        <member name="T:Ayerhs.Controllers.UserManagementController">
+            <summary>
+            Controller for User Management operations.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.#ctor(Microsoft.Extensions.Logging.ILogger{Ayerhs.Controllers.UserManagementController},Ayerhs.Core.Interfaces.UserManagement.IUserService)">
+            <summary>
+            Controller for User Management operations.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.AddPartition(System.String)">
+            <summary>
+            Adds a partition to the user management system.
+            </summary>
+            <param name="partitionName">The name of the partition to add.</param>
+            <returns>An IActionResult object indicating the outcome of the operation.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.GetPartitions">
+            <summary>
+            Retrieves a list of partitions.
+            </summary>
+            <returns>On success, a 200 OK response containing an ApiResponse object with a list of Partition objects and a success message.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.UpdatePartition(Ayerhs.Core.Entities.UserManagement.InUpdatePartition)">
+            <summary>
+            Updates a partition asynchronously based on the provided name.
+            </summary>
+            <param name="inUpdatePartition">The entity contains id and name of the partition to be updated.</param>
+            <returns>
+            On success, a 200 OK response with a success message.
+            On error, a 400 BadRequest response with an error message.
+            </returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.DeletePartition(System.Int32)">
+            <summary>
+            Deletes a partition asynchronously.
+            </summary>
+            <param name="id">The partition ID (must be positive).</param>
+            <returns>Success/Failure response with details.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.AddGroup(Ayerhs.Core.Entities.UserManagement.InAddGroupDto)">
+            <summary>
+            Adds a new group to the system.
+            </summary>
+            <param name="inAddGroupDto">An object containing details of the group to be added.</param>
+            <returns>An IActionResult representing the HTTP response with details of the operation.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.GetGroups(System.Int32)">
+            <summary>
+            Retrieves a list of groups based on the provided partition ID.
+            </summary>
+            <param name="partitionId">The ID of the partition to retrieve groups for. 0 retrieves all groups.</param>
+            <returns>An IActionResult representing the HTTP response.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.UpdateGroup(Ayerhs.Core.Entities.UserManagement.InUpdateGroupDto)">
+            <summary>
+            Updates a group asynchronously.
+            </summary>
+            <param name="inUpdateGroupDto">The DTO containing the updated group information.</param>
+            <returns>An IActionResult containing the API response.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.SoftDeleteGroup(System.Int32)">
+            <summary>
+            Soft deletes a group by marking it as inactive.
+            </summary>
+            <param name="id">The ID of the group to soft delete.</param>
+            <returns>An ApiResponse object indicating success or failure with details.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.RecoverDeletedGroup(System.Int32)">
+            <summary>
+            Recovers a previously deleted group identified by the provided ID.
+            </summary>
+            <param name="id">The unique identifier of the deleted group.</param>
+            <returns>An IActionResult object containing the API response based on the recovery success or failure.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.DeleteGroup(System.Int32)">
+            <summary>
+            Deletes a group asynchronously based on the provided ID.
+            </summary>
+            <param name="id">The ID of the group to delete.</param>
+            <returns>An IActionResult indicating the success or failure of the deletion.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.ChangePartitionGroup(Ayerhs.Core.Entities.UserManagement.InChangePartitionGroup)">
+            <summary>
+            Changes the partition group for a given partition.
+            </summary>
+            <param name="inChangePartitionGroup">The input model containing the partition ID and new group ID.</param>
+            <returns>An API response indicating success or failure with appropriate status code, message, and error details.</returns>
+        </member>
+        <member name="M:Ayerhs.Controllers.UserManagementController.EnableDisableGroup(System.Int32)">
+            <summary>
+            Enables or disables a group based on the provided group ID.
+            </summary>
+            <param name="id">The ID of the group to enable or disable.</param>
+            <returns>An IActionResult representing the API response.</returns>
         </member>
         <member name="T:Ayerhs.Core.Entities.AccountManagement.ClientRoles">
             <summary>
@@ -638,6 +954,357 @@
             Collection of client roles associated with the Role.
             </summary>
         </member>
+        <member name="T:Ayerhs.Core.Entities.UserManagement.Group">
+            <summary>
+            Represents a group within the user management system.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Group.Id">
+            <summary>
+            Unique identifier for the group.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Group.GroupId">
+            <summary>
+            Unique identifier for the group across the system. 
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Group.GroupName">
+            <summary>
+            Name of the group.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Group.PartitionId">
+            <summary>
+            Identifier of the partition the group belongs to.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Group.IsActive">
+            <summary>
+            Indicates whether the group is active.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Group.IsDeleted">
+            <summary>
+            Indicates whether the group is deleted.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Group.GroupCreatedOn">
+            <summary>
+            Date and time the group was created.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Group.GroupUpdatedOn">
+            <summary>
+            Date and time the group information was last updated.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Group.GroupDeletedOn">
+            <summary>
+            Date and time the group was marked as deleted.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Group.Partition">
+            <summary>
+            Navigation property to the partition the group belongs to.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.UserManagement.InAddGroupDto">
+            <summary>
+            Data Transfer Object (DTO) used for adding a new group.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InAddGroupDto.PartitionId">
+            <summary>
+            Identifier of the partition the group belongs to.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InAddGroupDto.GroupName">
+            <summary>
+            Name of the group to be created.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.UserManagement.InAddUser">
+            <summary>
+            This class represents the data model for adding a new user.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InAddUser.UserName">
+            <summary>
+            User's display name.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InAddUser.UserEmail">
+            <summary>
+            User's email address.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InAddUser.UserPassword">
+            <summary>
+            User's password (plain text - will be hashed on server-side).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InAddUser.UserMobileNumber">
+            <summary>
+            User's mobile phone number.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InAddUser.RoleId">
+            <summary>
+            Foreign key for the user's role identifier.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InAddUser.UserPartition">
+            <summary>
+            User partition identifier (specific meaning depends on your application logic).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InAddUser.UserGroup">
+            <summary>
+            User group identifier (specific meaning depends on your application logic).
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.UserManagement.InChangePartitionGroup">
+            <summary>
+            Represents a group associated with a partition for change management purposes.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InChangePartitionGroup.PartitionId">
+            <summary>
+            Gets or sets the identifier of the partition.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InChangePartitionGroup.GroupId">
+            <summary>
+            Gets or sets the identifier of the group.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.UserManagement.InUpdateGroupDto">
+            <summary>
+            This class represents a Data Transfer Object (DTO) used for updating groups.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InUpdateGroupDto.Id">
+            <summary>
+            Gets or sets the unique identifier of the group.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InUpdateGroupDto.NewGroupName">
+            <summary>
+            Gets or sets the new name of the group.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InUpdateGroupDto.PartitionId">
+            <summary>
+            Gets or sets the partition identifier associated with the group.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.UserManagement.InUpdatePartition">
+            <summary>
+            Represents the data required to update a partition.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InUpdatePartition.Id">
+            <summary>
+            Unique identifier of the partition.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.InUpdatePartition.PartitionName">
+            <summary>
+            Name of the partition to be updated. Can be null for scenarios where the name update might not be required.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.UserManagement.Partition">
+            <summary>
+            Represents a partition within the user management system.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Partition.Id">
+            <summary>
+            Unique identifier for the partition.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Partition.PartitionId">
+            <summary>
+            Unique identifier for each partition
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Partition.PartitionName">
+            <summary>
+            Name of the partition.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Partition.PartitionCreatedOn">
+            <summary>
+            Date and time when the partition was created.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Partition.PartitionUpdatedOn">
+            <summary>
+            Date and time when the partition was last updated.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.Partition.Groups">
+            <summary>
+            Collection of child groups associated with this group. (One-to-Many relationship)
+            This property can be null if the group does not have any child groups.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.UserManagement.User">
+            <summary>
+            This class represents a user entity in the system.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.Id">
+            <summary>
+            Unique identifier for the user. (Primary Key)
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserId">
+            <summary>
+            User identifier (used for login purposes).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserName">
+            <summary>
+            User's display name.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserEmail">
+            <summary>
+            User's email address.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserPassword">
+            <summary>
+            User's password (hashed).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserMobileNumber">
+            <summary>
+            User's mobile phone number.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.Partition">
+            <summary>
+            User partition identifier (specific meaning depends on your application logic).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.Group">
+            <summary>
+            User group identifier (specific meaning depends on your application logic).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserRoleId">
+            <summary>
+            Foreign key for the user's role.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserIsActive">
+            <summary>
+            Flag indicating whether the user account is active.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserIsLocked">
+            <summary>
+            Flag indicating whether the user account is locked.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserStatus">
+            <summary>
+            Enumeration value representing the user's current status (Active, Inactive, Suspended).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserLoginAttemptCount">
+            <summary>
+            Number of login attempts made by the user.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserDeletedState">
+            <summary>
+            Enumeration value representing the user's deletion state (NotDeleted, SoftDeleted, HardDeleted).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserCreatedOn">
+            <summary>
+            Date and time the user record was created.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserUpdatedOn">
+            <summary>
+            Date and time the user record was last updated.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserLastLoginOn">
+            <summary>
+            Date and time of the user's last login.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserLockedUntil">
+            <summary>
+            Date and time until which the user account is locked.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserDeletedOn">
+            <summary>
+            Date and time the user record was soft deleted.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.UserAutoDeletedOn">
+            <summary>
+            Date and time the user record was auto-deleted (nullable).
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.Salt">
+            <summary>
+            Random string value used for password hashing.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Core.Entities.UserManagement.User.ClientRoles">
+            <summary>
+            Navigation property for the user's client roles (collection).
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.UserManagement.UserStatus">
+            <summary>
+            Enumeration representing the different user account status options.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.UserManagement.UserStatus.Active">
+            <summary>
+            User account is active.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.UserManagement.UserStatus.Inactive">
+            <summary>
+            User account is inactive.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.UserManagement.UserStatus.Suspended">
+            <summary>
+            User account is suspended.
+            </summary>
+        </member>
+        <member name="T:Ayerhs.Core.Entities.UserManagement.UserDeleteState">
+            <summary>
+            Enumeration representing the different user deletion state options.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.UserManagement.UserDeleteState.NotDeleted">
+            <summary>
+            User record is not deleted.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.UserManagement.UserDeleteState.SoftDeleted">
+            <summary>
+            User record is in deleted state.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.UserManagement.UserDeleteState.HardDeleted">
+            <summary>
+            User record is deleted.
+            </summary>
+        </member>
         <member name="T:Ayerhs.Core.Entities.Utility.ApiResponse`1">
             <summary>
             Represents an API response containing status information and data.
@@ -804,6 +1471,86 @@
         <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.UnknownError">
             <summary>
             Error code indicating an unknown error occurred.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.UserManagementValidationError">
+            <summary>
+            Error code indicating a validation error occurred while User Management
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.AddPartitionError">
+            <summary>
+            Error code indicating error occurred while adding partition.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.GetPartitionsError">
+            <summary>
+            Error code indicating error occurred while getting partitions list.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.UpdatePartitionError">
+            <summary>
+            Error code indicating error occurred while updating partition
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.DeletePartitionNegativeIdError">
+            <summary>
+            Error Code indicating error occurred while deleting partition due to negative ID provided.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.DeletePartitionError">
+            <summary>
+            Error code indicating error occurred while deleting partition.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.AddGroupError">
+            <summary>
+            Error code indicating error occurred while adding group.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.GetGroupsError">
+            <summary>
+            Error code indicating error occurred while getting group.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.UpdateGroupError">
+            <summary>
+            Error code indicating error occurred while updating group.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.DeleteGroupError">
+            <summary>
+            Error code indicating error occurred while deleting group.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.SoftDeleteGroupError">
+            <summary>
+            Error code indicating error occurred while soft deleting group.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.RecoverDeletedGroupError">
+            <summary>
+            Error code indicating error occurred while recovering group.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.InvalidGroupPartitionIdError">
+            <summary>
+            Error code indicating error occurred invalid Group and Partition ID
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.ChangePartitionGroupError">
+            <summary>
+            Error code indicating error occurred while changing partition of group
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.EnableDisableGroupError">
+            <summary>
+            Error code indicating error occurred while enableing or disableing group.
+            </summary>
+        </member>
+        <member name="F:Ayerhs.Core.Entities.Utility.CustomErrorCodes.UserManagementUnknownError">
+            <summary>
+            Error code for Unknow Error occurred while User Management
             </summary>
         </member>
         <member name="T:Ayerhs.Core.Entities.Utility.OtpStorage">
@@ -1000,6 +1747,206 @@
             <param name="inForgotClientPassword">An object containing the client's email and potentially their new password.</param>
             <returns>A tuple indicating success (bool) and an optional message (string) related to the operation.</returns>
         </member>
+        <member name="T:Ayerhs.Core.Interfaces.UserManagement.IUserRepository">
+            <summary>
+            This interface defines functionalities to interact with Partition data.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.AddPartitionAsync(Ayerhs.Core.Entities.UserManagement.Partition)">
+            <summary>
+            Adds a new partition asynchronously to the database.
+            </summary>
+            <param name="partition">The partition object to be added.</param>
+            <returns>A task that returns true if the partition is added successfully, false otherwise.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.GetPartitionDetailsByName(System.String)">
+            <summary>
+            Gets the details of a partition asynchronously based on its name.
+            </summary>
+            <param name="partitionName">The name of the partition to retrieve details for.</param>
+            <returns>A task that returns a boolean indicating success or null if no partition is found. 
+             The task may also return additional details about the partition upon successful retrieval.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.GetPartitionsAsync">
+            <summary>
+            Retrieves a list of partitions asynchronously.
+            </summary>
+            <returns>A task that resolves to a list of Partition objects.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.GetPartitionByIdAsync(System.Int32)">
+            <summary>
+            Asynchronously retrieves a partition by its unique identifier.
+            </summary>
+            <param name="id">The unique identifier of the partition to retrieve.</param>
+            <returns>A task that resolves to a Partition object if found, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.UpdatePartitionsByNameAsync(Ayerhs.Core.Entities.UserManagement.Partition)">
+            <summary>
+            Updates partitions based on a provided name.
+            </summary>
+            <param name="partition">The entity of the partition to be updated.</param>
+            <returns>A task that resolves to a nullable bool indicating success (true) or failure (null) upon update.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.DeletePartitionByIdAsync(System.Int32)">
+            <summary>
+            Deletes a partition asynchronously based on its identifier.
+            </summary>
+            <param name="id">The unique identifier of the partition to be deleted.</param>
+            <returns>A task that returns a nullable boolean value indicating the success of the deletion.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.GetGroupDetailsByNameAndPartitionAsync(System.String,System.Int32)">
+            <summary>
+            Asynchronously retrieve details of a group based on its name.
+            </summary>
+            <param name="groupName">The name of the group to search for.</param>
+            <param name="partitionId">The ID of the partition to search for.</param>
+            <returns>A task that returns the partition details if found, or null if not found.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.AddGroupAsync(Ayerhs.Core.Entities.UserManagement.Group)">
+            <summary>
+            Adds a new group asynchronously to the database.
+            </summary>
+            <param name="group">The group object to be added.</param>
+            <returns>A task that returns true if the group is added successfully, false otherwise.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.GetGroupsAsync">
+            <summary>
+            Asynchronously retrieves a list of all groups.
+            </summary>
+            <returns>A task that resolves to a list of Group objects.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.GetGroupsByPartitionAsync(System.Int32)">
+            <summary>
+            Asynchronously retrieves a list of groups for a specific partition.
+            </summary>
+            <param name="partitionId">The ID of the partition to retrieve groups for.</param>
+            <returns>A task that resolves to a list of Group objects for the specified partition.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.GetGroupByIdAsync(System.Int32)">
+            <summary>
+            Gets a group asynchronously by its identifier.
+            </summary>
+            <param name="id">The identifier of the group to retrieve.</param>
+            <returns>A Task that returns the group if found, otherwise null.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.UpdateGroupAsync(Ayerhs.Core.Entities.UserManagement.Group)">
+            <summary>
+            Updates a group asynchronously.
+            </summary>
+            <param name="group">The group object containing the updated information.</param>
+            <returns>A Task that returns true if the update was successful, otherwise false.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.DeleteGroupAsync(System.Int32)">
+            <summary>
+            Deletes a group asynchronously based on the provided ID.
+            </summary>
+            <param name="id">The ID of the group to delete.</param>
+            <returns>A task that returns true if the deletion was successful, false otherwise.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.ChangePartitionOfGroupAsync(System.Int32,System.Int32)">
+            <summary>
+            Changes the partition of a group.
+            </summary>
+            <param name="groupId">The ID of the group.</param>
+            <param name="partitionId">The ID of the new partition.</param>
+            <returns>True if the partition was changed successfully, null otherwise.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserRepository.GetGroupByNameAndPartitionAsync(System.String,System.Int32)">
+            <summary>
+            Asynchronously checks if a group with the specified name exists in the given partition.
+            </summary>
+            <param name="groupName">The name of the group to search for.</param>
+            <param name="partitionId">The ID of the partition to search in.</param>
+            <returns>A task that represents the asynchronous operation. The task result contains a nullable boolean indicating whether the group exists.</returns>
+        </member>
+        <member name="T:Ayerhs.Core.Interfaces.UserManagement.IUserService">
+            <summary>
+            Interface for user management services.
+            </summary>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.AddPartitionAsync(System.String)">
+            <summary>
+            Adds a partition to the user management system.
+            </summary>
+            <param name="partitionName">The name of the partition to add.</param>
+            <returns>A task that returns a tuple indicating success and an optional error message.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.GetPartitionsAsync">
+            <summary>
+            Retrieves a list of partitions asynchronously.
+            </summary>
+            <returns>A task that resolves to a list of Partition objects.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.UpdatePartitionAsync(Ayerhs.Core.Entities.UserManagement.InUpdatePartition)">
+            <summary>
+            Updates a partition asynchronously based on the provided name.
+            </summary>
+            <param name="inUpdatePartition">The entity contains id and name of the partition to be updated.</param>
+            <returns>A task that resolves to a tuple containing a boolean indicating success and a string message describing the outcome.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.DeletePartitionAsync(System.Int32)">
+            <summary>
+            Deletes a partition by ID asynchronously.
+            </summary>
+            <param name="id">Partition ID.</param>
+            <returns>(success, error message).</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.AddGroupAsync(Ayerhs.Core.Entities.UserManagement.InAddGroupDto)">
+            <summary>
+            Adds group under a specific partition in user management
+            </summary>
+            <param name="inAddGroupDto">The entity to be added.</param>
+            <returns>A task that returns a tuple indicating success and an optional error message.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.GetGroupsAsync(System.Int32)">
+            <summary>
+            Asynchronously retrieves a list of groups for a specific partition.
+            </summary>
+            <param name="partitionId">The ID of the partition to retrieve groups for.</param>
+            <returns>A task that resolves to a list of Group objects for the specified partition.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.UpdateGroupAsync(Ayerhs.Core.Entities.UserManagement.InUpdateGroupDto)">
+            <summary>
+            Updates a group asynchronously.
+            </summary>
+            <param name="inUpdateGroupDto">The DTO containing the updated group information.</param>
+            <returns>A Task that returns a tuple containing a boolean indicating success and a message.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.SoftDeleteGroupAsync(System.Int32)">
+            <summary>
+            Soft deletes a group asynchronously.
+            </summary>
+            <param name="id">The ID of the group to soft delete.</param>
+            <returns>A tuple containing a boolean indicating success and a message describing the outcome.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.RecoverDeletedGroupAsync(System.Int32)">
+            <summary>
+            Recovers a previously soft-deleted group asynchronously.
+            </summary>
+            <param name="id">The ID of the group to recover.</param>
+            <returns>A tuple containing a boolean indicating success and a message describing the outcome.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.DeleteGroupAsync(System.Int32)">
+            <summary>
+            Deletes a group asynchronously based on the provided ID.
+            </summary>
+            <param name="id">The ID of the group to delete.</param>
+            <returns>A task that returns a tuple containing a boolean indicating success and a message.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.ChangePartitionGroupAsync(Ayerhs.Core.Entities.UserManagement.InChangePartitionGroup)">
+            <summary>
+            Changes the partition of a group.
+            </summary>
+            <param name="inChangePartitionGroup">The input model containing group ID and new partition ID.</param>
+            <returns>A tuple containing a boolean indicating success, and an error message if unsuccessful.</returns>
+        </member>
+        <member name="M:Ayerhs.Core.Interfaces.UserManagement.IUserService.EnableDisableGroupAsync(System.Int32)">
+            <summary>
+            Enables or disables a group based on the provided group ID.
+            </summary>
+            <param name="id">The ID of the group to enable or disable.</param>
+            <returns>A tuple indicating success or failure and a message.</returns>
+        </member>
         <member name="T:Ayerhs.Core.Interfaces.Utility.IAesEncryptionDecryptionService">
             <summary>
             Interface for a service that encrypts and decrypts data using the Advanced Encryption Standard (AES) algorithm.
@@ -1081,6 +2028,16 @@
         <member name="P:Ayerhs.Infrastructure.Data.ApplicationDbContext.OtpStorages">
             <summary>
             DbSet for the OtpStorage entity.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Infrastructure.Data.ApplicationDbContext.Partitions">
+            <summary>
+            DbSet for the Partiton entity.
+            </summary>
+        </member>
+        <member name="P:Ayerhs.Infrastructure.Data.ApplicationDbContext.Groups">
+            <summary>
+            DbSet for the Group entity.
             </summary>
         </member>
         <member name="M:Ayerhs.Infrastructure.Data.ApplicationDbContext.OnModelCreating(Microsoft.EntityFrameworkCore.ModelBuilder)">
@@ -1166,6 +2123,30 @@
             <inheritdoc />
         </member>
         <member name="M:Ayerhs.Migrations.OtpStorageTableUpdateWithUseValue.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Ayerhs.Migrations.PartitionTableCreated">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.PartitionTableCreated.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.PartitionTableCreated.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.PartitionTableCreated.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="T:Ayerhs.Migrations.GroupsTableCreated">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.GroupsTableCreated.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.GroupsTableCreated.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Ayerhs.Migrations.GroupsTableCreated.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
             <inheritdoc />
         </member>
     </members>
